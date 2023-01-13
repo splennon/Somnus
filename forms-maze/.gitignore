@@ -4,6 +4,7 @@
 node_modules/
 .browserslistrc
 .editorconfig
+package-lock.json
 
 # Compiled output
 /dist
