@@ -39,4 +39,21 @@ export const v2 = [
     },
     open: false,
   },
+  {
+    id: 4,
+    header: 'Yet One More Custom Component Header',
+    content: {
+      componentType: SnippetContentComponent_v2,
+      inputs: {
+        description: 'Another Code snippet',
+        snippet: `
+          if (today === 'Sunday') {
+            selfDestruct();
+            // Holy moley
+          }
+        `,
+      },
+    },
+    open: false,
+  },
 ];

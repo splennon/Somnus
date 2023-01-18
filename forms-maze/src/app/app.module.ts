@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { WizardComponent } from './wizard/wizard-component';
 import { WIZARD_COMPONENTS } from './wizard/components'
+import { FormsModule } from '@angular/forms';
+import { RouteReuseStrategy } from '@angular/router';
+import { NoRouteReuseStrategy } from './NoRouteReuseStrategy';
 
 @NgModule({
   declarations: [
@@ -16,10 +19,16 @@ import { WIZARD_COMPONENTS } from './wizard/components'
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     BrowserAnimationsModule,
     ClarityModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: RouteReuseStrategy,
+      useClass: NoRouteReuseStrategy,
+    },
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

@@ -7,12 +7,14 @@ import {
     ViewContainerRef,
   } from '@angular/core';
 
+  import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+
   import * as configs from './configs/index';
   
   @Component({
     selector: 'wizard',
     template: `
-    <div *ngFor="let slot of storedConfigData">
+  <div *ngFor="let slot of storedConfigData">
     <div class="header" (click)="onHeaderClick(slot.id)">
       <i
         class="fa"
@@ -26,6 +28,21 @@ import {
       </div>
     </div>
   </div>
+  <clr-modal [clrModalOpen]="modalVersionSelector" [clrModalClosable]="false">
+    <h3 class="modal-title">Which version would you like?</h3>
+    <div class="modal-body">
+      <p>Please specify which version you would like to
+        build by query param (?version=) or as @Input
+        version, or use one of these links:</p>
+      <ul>
+        <li *ngFor="let ver of versions">
+          <a [routerLink]="[]" [queryParams]="{version: ver}">
+            {{ ver }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </clr-modal>
   `,
     styles: [`:host {
         width: 95%;
@@ -57,15 +74,33 @@ import {
   })
   export class WizardComponent {
 
-    @Input() public version: keyof typeof configs = "v2";
+    @Input() public version!: keyof typeof configs;
     
     storedConfigData!: any[];
+    modalVersionSelector: boolean = false;
+    versions: string[];
   
+    constructor(
+      private route: ActivatedRoute,
+    ) {
+      this.versions = Object.keys(configs);
+    }
+
     @ViewChildren('slotTemplate', { read: ViewContainerRef })
     public slotTemplates!: QueryList<ViewContainerRef>;
   
     public ngOnInit(): void {
       this.storedConfigData = configs[this.version];
+      this.route.queryParams.subscribe(params => {
+        this.version = params['version'];
+        if (this.versions.includes(this.version)) {
+          this.storedConfigData = configs[this.version];
+          this.modalVersionSelector = false;
+        } else {
+          this.modalVersionSelector = true;
+        }
+
+      });
     }
 
     public ngAfterViewInit(): void {

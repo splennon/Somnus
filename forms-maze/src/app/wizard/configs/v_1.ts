@@ -1,3 +1,4 @@
+import { FormExampleComponent_v1 } from "../components/form-example/v1/form-example.component";
 import { ListContentComponent_v1 } from "../components/list-content/v1/listcontent.component";
 import { SnippetContentComponent_v1 } from "../components/snippet-content/v1/snippet-contet.component";
 
@@ -28,6 +29,22 @@ export const v1 = [
     header: 'Another Custom Component Header',
     content: {
       componentType: SnippetContentComponent_v1,
+      inputs: {
+        description: 'Code snippet',
+        snippet: `
+          if (today === 'Sunday') {
+            selfDestruct();
+          }
+        `,
+      },
+    },
+    open: false,
+  },
+  {
+    id: 4,
+    header: 'Form Example Component Header',
+    content: {
+      componentType: FormExampleComponent_v1,
       inputs: {
         description: 'Code snippet',
         snippet: `
