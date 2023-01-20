@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { FormModel } from 'src/app/BaseTypes';
+import { Store, Action } from '@ngrx/store';
 
 @Component({
   selector: 'list-content',
@@ -33,8 +34,20 @@ export class FormExampleComponent_v1 {
 
   @Input() public items: any[] | undefined;
 
+  constructor(private store: Store<any>) {}
+  
+  ngOnInit() {
+    let outer = this.model;
+    this.store.addReducer("BookBasicForm_v1", function(state: any, action: Action){
+      if (action.type == "SaveFormExampleComponent_v1") {
+        console.log({ ...state, "FormExampleComponent_v1": outer });
+        return { ...state, "FormExampleComponent_v1": outer }; 
+      }
+    });
+  }
+
   onSubmit(form: NgForm) {
-    console.log("Form Submitted: " + form.value);
+    this.store.dispatch(new BookBasicSaveAction_v1());
   }
 }
 
@@ -43,4 +56,8 @@ export interface BookBasicFormModel_v1 extends FormModel {
   hours: number;
   minutes: number;
   author: string;
+}
+
+export class BookBasicSaveAction_v1 implements Action {
+  type = "SaveFormExampleComponent_v1";
 }
